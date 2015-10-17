@@ -33,7 +33,7 @@ var vector = {
     getAngle: function() {
         return Math.atan2(this.y, this.x);
     },
-    getLengthSquared() {
+    getLengthSquared: function() {
         return (this.x*this.x) + (this.y*this.y);
     },
     getLength: function() {
