@@ -163,7 +163,6 @@ window.onload = function() {
         startxy = vector.create(centerX, centerY-300),
         ship    = { 
             pos: startxy, 
-            //velocity: vector.createPolar(angle.toRad(-20), 1.8),
             velocity: vector.createPolar(angle.toRad(0), 1.7),
             heading: angle.toRad(90),
             oldpos: startxy.copy(),
@@ -172,7 +171,7 @@ window.onload = function() {
             mass: 10
         }
 
-    /* Because, fuck you keyhandlers... */
+    /* Simultanious keypresses */
     onkeydown = onkeyup = function(e) {
       keymap[e.keyCode] = e.type;
     }
@@ -204,14 +203,18 @@ window.onload = function() {
           halfW = assets.earth.width/2;
           
       context.beginPath();
-      //context.save();
-      //context.translate(earth.pos.x, earth.pos.y);
-      //context.rotate(earth.rotation);
-      //context.drawImage(assets.earth, -halfW, -halfH);
+      /*
+      context.save();
+      context.translate(earth.pos.x, earth.pos.y);
+      context.rotate(earth.rotation);
+      context.drawImage(assets.earth, -halfW, -halfH);
+      */
       context.drawImage(assets.earth, earth.pos.x-halfW, earth.pos.y-halfH);
-      //context.restore();
-      //context.closePath();
-      //earth.rotation += 0.001;
+      /*
+      context.restore();
+      context.closePath();
+      earth.rotation += 0.001;
+      */
     }
   
     function drawCraft() {
