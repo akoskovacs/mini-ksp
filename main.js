@@ -2,12 +2,11 @@ var angle = {
     toDeg: function(rad) {
         return 180/(Math.PI/rad);
     },
-    // Radians are bad and you should feel bad.
     toRad: function(deg) { 
         return (Math.PI/180)*deg;
     }
 }
-// Shitty vectors are shitty
+
 var vector = {
     x: 0,
     y: 0,
