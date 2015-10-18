@@ -242,7 +242,6 @@ window.onload = function() {
     function doKeys() {
         if (keymap[37] == 'keydown') { // left
           ship.heading -= 0.1;
-          console.log("left");
         }
         if (keymap[38] == 'keydown') { // up
           var v = vector.createPolar(ship.heading-Math.PI/2, 0.5);
@@ -253,7 +252,6 @@ window.onload = function() {
         }
         if (keymap[39] == 'keydown') {
           ship.heading += 0.1;
-          console.log("right");
         }
       keymap = [];
     }
