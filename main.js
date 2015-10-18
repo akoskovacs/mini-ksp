@@ -122,13 +122,14 @@ var vector = {
 };
 
 window.onload = function() {
-    var canvas  = document.getElementById("canvas"),
-        context = canvas.getContext("2d"),
-        width   = canvas.width = window.innerWidth,
-        height  = canvas.height = window.innerHeight;
-    
-    var centerY = height * .5,
-        centerX = width * .5;
+    var canvas     = document.getElementById("canvas"),
+        context    = canvas.getContext("2d"),
+        width      = canvas.width  = window.innerWidth,
+        height     = canvas.height = window.innerHeight,
+        canvasData = context.getImageData(0, 0, width, height),
+        centerY    = height/2,
+        centerX    = width/2;
+  
     var planets = [
         {
             name: 'Föld',
@@ -175,11 +176,14 @@ window.onload = function() {
       keymap[e.keyCode] = e.type;
     }
 
+    var gravity = vector.createPolar(0, 0);
     function gravitateTo(planet) {
       var r   = planet.pos.distanceTo(ship.pos),
           f   = (planet.mass*ship.mass)/(r*r),
           phi = ship.pos.angleTo(planet.pos);
-      return vector.createPolar(phi, f);
+      
+      gravity.setPolar(phi, f);
+      return gravity;
     }
     
     function doPhysics() {
@@ -188,12 +192,19 @@ window.onload = function() {
       ship.pos.addTo(ship.velocity);
     }
 
+    function drawPixel(x, y, r, g, b, a) {
+      var index = (x + y * width) * 4;    
+      canvasData.data[index + 0] = r;
+      canvasData.data[index + 1] = g;
+      canvasData.data[index + 2] = b;
+      canvasData.data[index + 3] = a;
+    }
+  
     function drawStars() {
       context.beginPath();
-      context.strokeStyle = 'white';
+      context.fillStyle = "white";
       for (var i = 0; i < STAR_COUNT; i++) {
-        context.rect(stars[i].x, stars[i].y, 1, 0);
-        context.stroke();
+        context.fillRect(stars[i].x, stars[i].y, 2, 2);
       }
     }
   
@@ -201,8 +212,8 @@ window.onload = function() {
       var halfH = assets.earth.height/2,
           halfW = assets.earth.width/2;
           
-      context.beginPath();
       /*
+      context.beginPath();
       context.save();
       context.translate(earth.pos.x, earth.pos.y);
       context.rotate(earth.rotation);
@@ -241,18 +252,22 @@ window.onload = function() {
     function doKeys() {
         if (keymap[37] == 'keydown') { // left
           ship.heading -= 0.1;
+          keymap[37] == undefined;
         }
         if (keymap[38] == 'keydown') { // up
           var v = vector.createPolar(ship.heading-Math.PI/2, 0.5);
           ship.velocity.addTo(v);
           ship.img = assets.rocket_flame;
+          keymap[38] == undefined;
         } else if (keymap[38] == 'keyup') {
           ship.img = assets.rocket;
+          keymap[38] == undefined;
         }
-        if (keymap[39] == 'keydown') {
+        if (keymap[39] == 'keydown') { // right
           ship.heading += 0.1;
+          keymap[39] == undefined;
         }
-      keymap = [];
+      //keymap = [];
     }
   
     function render() {
