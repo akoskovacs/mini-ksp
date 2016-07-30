@@ -7,119 +7,146 @@ var angle = {
     }
 }
 
-var vector = {
-    x: 0,
-    y: 0,
-    create: function(_x, _y) {
-        var obj = Object.create(this);
-        obj.x = _x || 0;
-        obj.y = _y || 0;
-        return obj;
-    },
-    createPolar: function(phi, len) {
-        v = this.create();
-        return v.setPolar(phi,len);
-    },
-    createFrom: function(v) {
-        return vector.create(v.x, v.y);
-    },
-    isEqual: function(v) {
-        return (this.x === v.x) && (this.y === v.y);
-    },
-    copy: function() {
-        return vector.create(this.x, this.y);
-    },
-    getAngle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-    getLengthSquared: function() {
-        return (this.x*this.x) + (this.y*this.y);
-    },
-    getLength: function() {
-        return Math.sqrt(this.getLengthSquared());    
-    },
-    setLength: function(len) {
-        var phi = this.getAngle();
-        return this.setPolar(phi, len);
-    },
-    setAngle: function(phi) {
-        var len = this.getLength();
-        return this.setPolar(phi, len);
-    },
-    set: function(v) {
-        this.x = v.x;
-        this.y = v.y;
-        return this;
-    },
-    add: function(v) {
-        return vector.create(this.x+v.x, this.y+v.y);
-    },
-    sub: function(v) {
-        return vector.create(this.x-v.x, this.y-v.y);
-    },
-    multiply: function(v) {
-        return vector.create(this.x*v.x, this.y*v.y);
-    },
-    divide: function(v) { // et impera
-        return vector.create(this.x/v.x, this.y/v.y);
-    },
-    angleTo: function(v) {
-        return Math.atan2(v.y-this.y, v.x-this.x);
-    },
-    setAngleTo: function(v) {
-        var phi = this.angleTo(v);
-        this.setAngle(phi);
-        return phi;
-    },
-    setLengthTo: function(v, len) {
-        var phi = this.angleTo(v);
-        this.setPolar(phi, len);
-        return this;
-    },
-    setPolar: function(phi, len) {
-        this.x = Math.cos(phi) * len;
-        this.y = Math.sin(phi) * len;
-        return this;
-    },
-    scale: function(scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        return this;
-    },
-    addScalar: function(scalar) {
-        this.x += scalar;
-        this.y += scalar;
-        return this;
-    },
-    distanceTo: function(v) {
-        var dx = v.x-this.x,
-            dy = v.y-this.y;
-        return Math.sqrt(dx*dx + dy*dy);
-    },
-    addTo: function(v) {
-        this.x += v.x;
-        this.y += v.y;
-        return this;
-    },
-    subFrom: function(v) {
-        this.x -= v.x;
-        this.y -= v.y;
-        return this;
-    },
-    mulBy: function(v) {
-        this.x *= v.x;
-        this.y *= v.y;
-        return this;
-    },
-    divBy: function(v) {
-        this.x /= v.x;
-        this.y /= v.y;
-        return this;
-    },
-    toString: function() {
-        return '(' + this.x + ', ' + this.y + ')';
-    }
-};
+var Vector = (function() {
+  function Vector(x, y) {
+  
+    this.x = x || 0;
+    this.y = y || 0;
+    return this;
+  }
+
+  Vector.createPolar = function(phi, len) {
+    var v = new Vector();
+    v.setPolar(phi, len);
+    return v;
+  }
+
+  Vector.prototype.createFrom = function(v) {
+    return new Vector(v.x, v.y);
+  }
+  
+  Vector.prototype.isEqual = function(v) {
+    return (this.x === v.x) && (this.y === v.y);
+  }
+
+  Vector.prototype.copy = function() {
+    return new Vector(this.x, this.y);
+  }
+
+  Vector.prototype.getAngle = function() {
+    return Math.atan2(this.y, this.x);
+  }
+
+  Vector.prototype.getLengthSquared = function() {
+    return (this.x*this.x) + (this.y*this.y);
+  }
+
+  Vector.prototype.getLength = function() {
+    return Math.sqrt(this.getLengthSquared());    
+  }
+
+  Vector.prototype.setLength = function(len) {
+    var phi = this.getAngle();
+    return this.setPolar(phi, len);
+  }
+  
+  Vector.prototype.setAngle = function(phi) {
+    var len = this.getLength();
+    return this.setPolar(phi, len);
+  }
+
+  Vector.prototype.set = function(v) {
+    this.x = v.x;
+    this.y = v.y;
+    return this;
+  }
+
+  Vector.prototype.add = function(v) {
+    return new Vector(this.x+v.x, this.y+v.y);
+  }
+  
+  Vector.prototype.sub = function(v) {
+    return new Vector(this.x-v.x, this.y-v.y);
+  }
+
+  Vector.prototype.multiply = function(v) {
+    return new Vector(this.x*v.x, this.y*v.y);
+  }
+
+  Vector.prototype.divide = function(v) { // et impera
+    return new Vector(this.x/v.x, this.y/v.y);
+  }
+
+  Vector.prototype.angleTo = function(v) {
+    return Math.atan2(v.y-this.y, v.x-this.x);
+  }
+
+  Vector.prototype.setAngleTo = function(v) {
+    var phi = this.angleTo(v);
+    this.setAngle(phi);
+    return phi;
+  }
+
+  Vector.prototype.setLengthTo = function(v, len) {
+    var phi = this.angleTo(v);
+    this.setPolar(phi, len);
+    return this;
+  }
+
+  Vector.prototype.setPolar = function(phi, len) {
+    this.x = Math.cos(phi) * len;
+    this.y = Math.sin(phi) * len;
+    return this;
+  }
+
+  Vector.prototype.scale = function(scalar) {
+    this.x *= scalar;
+    this.y *= scalar;
+    return this;
+  }
+
+  Vector.prototype.addScalar = function(scalar) {
+    this.x += scalar;
+    this.y += scalar;
+    return this;
+  }
+
+  Vector.prototype.distanceTo = function(v) {
+    var dx = v.x-this.x,
+        dy = v.y-this.y;
+    return Math.sqrt(dx*dx + dy*dy);
+  }
+
+  Vector.prototype.addTo = function(v) {
+    this.x += v.x;
+    this.y += v.y;
+    return this;
+  }
+
+  Vector.prototype.subFrom = function(v) {
+    this.x -= v.x;
+    this.y -= v.y;
+    return this;
+  }
+
+  Vector.prototype.mulBy = function(v) {
+    this.x *= v.x;
+    this.y *= v.y;
+    return this;
+  }
+
+  Vector.prototype.divBy = function(v) {
+    this.x /= v.x;
+    this.y /= v.y;
+    return this;
+  }
+
+  Vector.prototype.toString = function() {
+    return '(' + this.x + ', ' + this.y + ')';
+  }
+  
+  return Vector;
+})();
 
 window.onload = function() {
     var canvas     = document.getElementById("canvas"),
@@ -133,17 +160,17 @@ window.onload = function() {
     var planets = [
         {
             name: 'Föld',
-            pos: vector.create(centerX, centerY),
-            velocity: vector.create(),
+            pos: new Vector(centerX, centerY),
+            velocity: new Vector(),
             rotation: 0,
             color: '#44bbcc',
             size: 63,//6371e3, // meter
-            mass: 100//597e21 // Kg
+            mass: 1000//597e21 // Kg
         },
         {
             name: 'Mars',
-            pos: vector.create(700, centerY),
-            velocity: vector.create(),
+            pos: new Vector(700, centerY),
+            velocity: new Vector(),
             color: '#aaaa00',
             size: 10,//3390e3,  // meter
             mass: 15000//639e21 // Kg
@@ -154,7 +181,7 @@ window.onload = function() {
    
     var earth   = planets[0],
         mars    = planets[1],
-        gravity = vector.create(),
+        gravity = new Vector(),
         stars   = [],
         keymap  = [],
         projectiles = [],
@@ -163,12 +190,12 @@ window.onload = function() {
           rocket: document.getElementById("rocket-noflame"),
           rocket_flame: document.getElementById("rocket-wflame")
         },
-        startxy  = vector.create(centerX, centerY-300),
-        startvel = vector.createPolar(angle.toRad(0), 1.7),
+        startxy  = new Vector(centerX, centerY-300),
+        startvel = Vector.createPolar(angle.toRad(0), 4.5),
         ship    = { 
             pos: startxy.copy(), 
             velocity: startvel.copy(),
-            gravity: vector.create(),
+            gravity: new Vector(),
             heading: angle.toRad(90),
             oldpos: startxy.copy(),
             img: assets.rocket,
@@ -303,9 +330,12 @@ window.onload = function() {
 
       context.beginPath();
       /* Some useful debug shapes for the spacecraft image coordinates */
-      //context.fillRect(ship.pos.x, ship.pos.y, 10, 10);                     // image (0,0) marker
-      //context.arc(ship.pos.x+halfW, ship.pos.y+halfH, halfH, 0, Math.PI*2); // center marker
-      //context.fillRect(ship.pos.x+halfW*2, ship.pos.y+halfH*2, 10, 10);     // marker for (w, h)
+      /*
+      context.fillRect(ship.pos.x, ship.pos.y, 10, 10);                     // image (0,0) marker
+      context.arc(ship.pos.x+halfW, ship.pos.y+halfH, 10, 0, Math.PI*2); // center marker
+      context.fillRect(ship.pos.x+halfW*2, ship.pos.y+halfH*2, 10, 10);     // marker for (w, h)
+      */
+       
       context.save();
       /* These magic lines, are only here to do rotation on a single image (muh canvas) */
       context.translate(ship.pos.x+halfW, ship.pos.y+halfH);
@@ -318,14 +348,14 @@ window.onload = function() {
   
     function createProjectile() {
       var proj = {
-        velocity: vector.create(),
+        velocity: new Vector(),
         pos: ship.pos.copy(),
-        gravity: vector.create(),
+        gravity: new Vector(),
         mass: 10,
         ttl: 100
       };
       var phi = ship.heading-(Math.PI/2),
-            v = vector.createPolar(phi, ship.img.height/2); // Position on the nose cone
+            v = Vector.createPolar(phi, ship.img.height/2); // Position on the nose cone
       
       /* Translate the starting position to the ship's current position */
       proj.pos.addTo(v);
@@ -346,7 +376,7 @@ window.onload = function() {
           keymap[37] == undefined;
         }
         if (keymap[38] == 'keydown') { // up
-          var v = vector.createPolar(ship.heading-Math.PI/2, 0.1);
+          var v = Vector.createPolar(ship.heading-Math.PI/2, 0.1);
           ship.velocity.addTo(v);
           ship.img = assets.rocket_flame;
           keymap[38] == undefined;
@@ -376,7 +406,7 @@ window.onload = function() {
         window.requestAnimationFrame(render);
     };
     for (var i = 0; i < STAR_COUNT; i++) {
-      stars.push(vector.create(Math.random()*width, Math.random()*height));
+      stars.push(new Vector(Math.random()*width, Math.random()*height));
     }
     render();
 }
