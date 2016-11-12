@@ -76,7 +76,7 @@ window.onload = function() {
       obj.gravity.setPolar(phi, f);
       return gravity;
     }
-    
+  
     function doGravity(planet, obj) {
       /* Comment out the next line, to disable gravity */
       gravitateTo(planet, obj);
@@ -172,6 +172,10 @@ window.onload = function() {
       */
     }
   
+    function drawTrajectory() {
+
+    }
+  
     function drawCraft() {
      var halfW = ship.img.width/2+14,
           halfH = ship.img.height/2;
@@ -254,6 +258,10 @@ window.onload = function() {
       //keymap = [];
     }
   
+    function getRandomVector(xmax, ymax) {
+      return new Vector(Math.random()*xmax, Math.random()*ymax);
+    };
+  
     function render() {
         context.clearRect(0, 0, width, height);
         doKeys();
@@ -264,8 +272,28 @@ window.onload = function() {
         drawPlanets();
         window.requestAnimationFrame(render);
     };
+  
+    window.onresize = function() {
+      /* Refresh dimensions */
+      width = window.innerWidth;
+      height = window.innerHeight;
+      centerY    = height/2,
+      centerX    = width/2;
+      planets[0].pos.x = centerX;
+      planets[0].pos.y = centerY;
+      
+      /* Reset stars */
+      for (var i = 0; i < stars.length; i++) {
+        stars[i] = getRandomVector(width, height);
+      }
+      console.log("resized, x=" + width + ", y=" + height);
+    };
+    
     for (var i = 0; i < STAR_COUNT; i++) {
-      stars.push(new Vector(Math.random()*width, Math.random()*height));
+      stars.push(getRandomVector(width, height));
     }
+  
     render();
 }
+
+
