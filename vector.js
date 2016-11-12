@@ -136,5 +136,15 @@ var Vector = (function() {
     return '(' + this.x + ', ' + this.y + ')';
   }
   
+  Vector.prototype.fix = function() {
+    this.x = Math.ceil(this.x);
+    this.y = Math.ceil(this.y);
+    return this; 
+  }
+  
+  Vector.prototype.toFixed = function() {
+    return copy().fix();
+  }
+  
   return Vector;
 })();
